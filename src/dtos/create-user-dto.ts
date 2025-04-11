@@ -1,12 +1,20 @@
-import { Column, PrimaryColumnCannotBeNullableError, PrimaryGeneratedColumn } from "typeorm";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import {  PrimaryGeneratedColumn } from "typeorm";
 
 export class createUserDto{
 
     
+
     @PrimaryGeneratedColumn()
     id:number;
-    @Column()
-    role:string;
 
+  
+    @IsNotEmpty()
+    password:string;
 
+    @IsNotEmpty()
+    @IsEmail()
+    email:string
+
+    
 }

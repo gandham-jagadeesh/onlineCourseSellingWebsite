@@ -4,6 +4,10 @@ import { Student } from "./StudentEntity";
 import { Instructor } from "./InstructorEntity";
 
 
+enum Role{
+    STUDENT="student",
+    INSTRUCTOR="instructor"
+}
 
 @Entity()
 export class User{
@@ -12,17 +16,27 @@ export class User{
     id:number;
 
 
-    @Column({nullable:false,unique:true})
+    @Column({nullable:false})
     password:string;
 
-    @OneToOne(()=>Profile,profile=>profile.user,{nullable:false})
+    @Column({nullable:false,unique:true})
+    email:string
+
+    @OneToOne(()=>Profile,profile=>profile.user)
     @JoinColumn()
     profile:Profile;
+    
+    
+    
+    @Column({type:"enum",enum:Role,default:Role.STUDENT})
+    role:Role
 
-    @OneToOne(()=>Student,student=>student.user)
+    @OneToOne(()=>Student,student=>student.user,)
+    @JoinColumn()
     student:Student;
 
     @OneToOne(()=>Instructor,Instructor=>Instructor.user)
+    @JoinColumn()
     instructor:Instructor;
 
 }

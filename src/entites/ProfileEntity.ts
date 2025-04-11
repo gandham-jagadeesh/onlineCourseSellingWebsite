@@ -7,6 +7,7 @@ export class Profile{
 
     @PrimaryGeneratedColumn()
     id:number;
+    
     @Column({nullable:false})
     name:string;
 
@@ -20,8 +21,12 @@ export class Profile{
     profilePicture:string;
 
 
+    @Column()
+    country:string;
+
     @OneToOne(()=>User,user=>user.profile)
     user:User
+
 
     
 }

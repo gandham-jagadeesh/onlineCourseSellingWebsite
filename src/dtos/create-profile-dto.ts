@@ -1,5 +1,6 @@
 
 
-export class createProfileDto{
 
+export class createProfileDto{
+    
 }
