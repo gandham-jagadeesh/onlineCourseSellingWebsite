@@ -10,6 +10,9 @@ export class Student{
     id:number;
 
 
+
     @OneToOne(()=>User,user=>user.student)
     user:User;
+
+
 }

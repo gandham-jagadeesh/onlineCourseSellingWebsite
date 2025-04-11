@@ -1,12 +1,9 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import {  PrimaryGeneratedColumn } from "typeorm";
+import { Exclude, Type } from "class-transformer";
+import { IsEmail, IsNotEmpty, IsOptional, ValidateNested } from "class-validator";
+import { createProfileDto } from "./create-profile-dto";
 
 export class createUserDto{
 
-    
-
-    @PrimaryGeneratedColumn()
-    id:number;
 
   
     @IsNotEmpty()
@@ -15,6 +12,10 @@ export class createUserDto{
     @IsNotEmpty()
     @IsEmail()
     email:string
-
+    
+    @ValidateNested()
+    @Type(()=>createProfileDto)
+    @IsOptional()
+    profile?:createProfileDto;
     
 }

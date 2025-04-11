@@ -9,10 +9,10 @@ export class Profile{
     id:number;
     
     @Column({nullable:false})
-    name:string;
+    firstName:string;
 
-    @Column({nullable:false})
-    dateofBirth:Date;
+    @Column({"type":Date,nullable:true})
+    dateOfBirth:Date;
     
     @Column()
     bio:string;
