@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./ProfileEntity";
 import { Student } from "./StudentEntity";
 import { Instructor } from "./InstructorEntity";
@@ -42,4 +42,9 @@ export class User{
     @JoinColumn()
     instructor:Instructor;
 
+    @CreateDateColumn({update:false})
+    createdAt:Date
+
+    @CreateDateColumn()
+    updatedAt:Date
 }
