@@ -8,20 +8,20 @@ export class Profile{
     @PrimaryGeneratedColumn()
     id:number;
     
-    @Column({nullable:false})
+    @Column({nullable:true})
     firstName:string;
 
     @Column({"type":Date,nullable:true})
     dateOfBirth:Date;
     
-    @Column()
+    @Column({nullable:true})
     bio:string;
 
-    @Column()
+    @Column({nullable:true})
     profilePicture:string;
 
 
-    @Column()
+    @Column({nullable:true})
     country:string;
 
     @OneToOne(()=>User,user=>user.profile)

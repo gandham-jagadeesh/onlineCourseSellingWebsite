@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsOptional, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 
 
@@ -7,7 +7,8 @@ export class createProfileDto {
     
    
     @IsString()
-    firstName?:string;
+    @IsNotEmpty()
+    firstName:string;
 
     @IsString()
     @IsOptional()

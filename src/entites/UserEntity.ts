@@ -1,14 +1,10 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Profile } from "./ProfileEntity";
 import { Student } from "./StudentEntity";
 import { Instructor } from "./InstructorEntity";
 import { Exclude } from "class-transformer";
+import { Role } from "src/util/role.enum.util";
 
-
-enum Role{
-    STUDENT="student",
-    INSTRUCTOR="instructor"
-}
 
 @Entity()
 export class User{
@@ -32,19 +28,19 @@ export class User{
     
     
     @Column({type:"enum",enum:Role,default:Role.STUDENT})
+    @Exclude()
     role:Role
 
-    @OneToOne(()=>Student,student=>student.user,)
-    @JoinColumn()
-    student:Student;
-
-    @OneToOne(()=>Instructor,Instructor=>Instructor.user)
-    @JoinColumn()
+    @OneToOne(()=>Instructor,instructor=>instructor.user)
     instructor:Instructor;
+
+    
+    @OneToOne(()=>Student,student=>student.user)
+    student:Student;
 
     @CreateDateColumn({update:false})
     createdAt:Date
 
-    @CreateDateColumn()
+    @UpdateDateColumn()
     updatedAt:Date
 }
