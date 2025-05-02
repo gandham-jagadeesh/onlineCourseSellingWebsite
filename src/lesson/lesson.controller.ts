@@ -11,7 +11,7 @@ export class LessonController {
 
 
   @Post()
-  @UseInterceptors(FileInterceptor("profilepic",{dest:"./uploads"})) //interceptor
+  @UseInterceptors(FileInterceptor("profilepic")) //interceptor
   async createLesson(@Body() createLessonDto:createLessonDto,@UploadedFile() file :Express.Multer.File/*here we can use pipe filter and run validations */){
     //gets the buffer and then store in /uploads folder in  memory for today and then
    // this.s3Service.uploadFile({bucketName:"",file,filefilename});

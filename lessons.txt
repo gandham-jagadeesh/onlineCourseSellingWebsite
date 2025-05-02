@@ -1,0 +1,8 @@
+
+
+problem 1: files not uploading to s3 timedout
+
+reason 1 : in controller i saved to disk as i am using multer disk storage
+so file which i am passing to the s3.uploadfile() will not contains file.buffer as its empty
+so thats the reason its timing out
+if i used  in memory the buffer stays the same with in the file
