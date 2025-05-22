@@ -8,8 +8,6 @@ import { Role } from "src/util/role.enum.util";
 
 export class createUserDto{
 
-
-    
   
     @IsNotEmpty()
     password:string;

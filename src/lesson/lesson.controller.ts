@@ -22,4 +22,15 @@ export class LessonController {
     const response = await this.s3Service.uploadFile(file);
     console.log(response);
   }
+
+ @Post("/presignedUrl")
+  async sendPresignedUrl(@Body() bodyDto:any){
+    //exactly what does this s3 service gonna do and what does it store in database itself and then do what ever u want with it
+    //
+    console.log(bodyDto);
+    const presignedurl  = await this.s3Service.createPutPresignedUrl(bodyDto.key);
+    console.log(presignedurl);
+    return presignedurl;
+  }
+
 }

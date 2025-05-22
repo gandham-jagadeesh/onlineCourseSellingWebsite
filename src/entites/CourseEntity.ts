@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Instructor } from "./InstructorEntity";
 import { Section } from "./SectionEntity";
 import { Student } from "./StudentEntity";
@@ -29,6 +29,12 @@ export class Course{
 
     @ManyToMany(()=>Student,student=>student.courses)
     students:Student;
+
+    @CreateDateColumn({update:false})
+    created_at:Date
+
+    @UpdateDateColumn()
+    updated_at:Date
 }
 
 

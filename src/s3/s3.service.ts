@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
-import {S3Client,PutObjectCommand,ListObjectsCommand, DeleteObjectCommand, S3, GetObjectCommand} from "@aws-sdk/client-s3"
+import {S3Client,PutObjectCommand,ListObjectsCommand, DeleteObjectCommand, S3, GetObjectCommand, PutBucketCorsCommand} from "@aws-sdk/client-s3"
 import { ConfigService } from '@nestjs/config';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -9,7 +8,7 @@ export class S3Service {
     
     private s3client:S3Client;
     private bucketname:string;
-
+    
     constructor(private readonly configService:ConfigService){
         this.s3client = new S3Client({
             region:configService.get<string>("AWS_REGION")!,
@@ -22,10 +21,36 @@ export class S3Service {
     }
 
 
+
+    // async getFile(key:string){
+    //     const getCommand = new GetObjectCommand({Bucket:this.bucketname,Key:key});
+    //     const file       = await this.s3client.send();getCommand
+    //     return file;
+    // }
+
+    async setCorsS3(){
+        const command   =new  PutBucketCorsCommand({
+            Bucket: "udemyapplication", 
+            CORSConfiguration: {
+              CORSRules: [
+                {
+                  AllowedHeaders: ["*"],
+                  AllowedMethods: ["PUT", "POST", "GET"],
+                  AllowedOrigins: ["http://127.0.0.1:5500"], 
+                  ExposeHeaders: ["ETag"],
+                  MaxAgeSeconds: 3000,
+                },
+              ],
+            },
+          });
+        const response = this.s3client.send(command);
+        return response;
+    }
+
     async uploadFile(file:Express.Multer.File){
         try{
         const insert = new PutObjectCommand({
-            Key:file.filename+".png",
+            Key:file.filename,
             Body:file.buffer,
             ContentLength:file.size,
             ContentType:file.mimetype,
@@ -39,7 +64,7 @@ export class S3Service {
         }
     }
 
-    async getAllFiles(){
+    async getAllFiles(){   
         const getFiles = new ListObjectsCommand({
           Bucket:this.bucketname
         });
@@ -49,7 +74,6 @@ export class S3Service {
 
 
     async deleteFile(fileId:string){   
-        //check whether file exists or not then delete can i do the both if exists then delete
         const deleteFile = new DeleteObjectCommand({
             Bucket:this.bucketname,
             Key:fileId
@@ -64,20 +88,30 @@ export class S3Service {
             Key:fileId,
             Bucket:this.bucketname,
             Body:file.buffer
-        })
+        });
     const updatedFile  = await this.s3client.send(updateFile);
     return updatedFile;
 
     }
 
-    async createPutPresignedUrl(client:S3Client,command:PutObjectCommand,expiresIn:number){
-        const   putsignedUrl:string = await getSignedUrl(client,command,{expiresIn:expiresIn});
+    async createPutPresignedUrl(key:string,expiresIn:number=3600){
+       console.log( await this.setCorsS3());
+        const putCommand = new PutObjectCommand({
+            Bucket:this.bucketname,
+            Key:key,
+        });
+        const   putsignedUrl:string = await getSignedUrl(this.s3client,putCommand,{expiresIn:expiresIn});
         return putsignedUrl;
     }
 
-    async createGetPresignedUrl(client:S3Client,command:GetObjectCommand,expiresIn:number){
-        const signedUrl:string = await getSignedUrl(client,command,{expiresIn:expiresIn});
+    async createGetPresignedUrl(key:string,expiresIn:number=3600){
+        const getCommand = new GetObjectCommand({
+            Bucket:this.bucketname,
+            Key:key
+        });
+        const signedUrl:string = await getSignedUrl(this.s3client,getCommand,{expiresIn:expiresIn});
         return signedUrl;
+    
     }
 
 }

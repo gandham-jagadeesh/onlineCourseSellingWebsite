@@ -14,6 +14,7 @@ import { EnrollmentController } from './enrollment/enrollment.controller';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { S3Service } from './s3/s3.service';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { ConfigModule } from '@nestjs/config';
     StudentModule,
     InstructorModule,
     LessonResourceModule,
-    EnrollmentModule],
+    EnrollmentModule,
+    AuthModule],
   controllers: [AppController, EnrollmentController],
   providers: [AppService, S3Service]
 })

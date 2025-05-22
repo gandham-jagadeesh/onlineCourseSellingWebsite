@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, Prim
 import { Profile } from "./ProfileEntity";
 import { Student } from "./StudentEntity";
 import { Instructor } from "./InstructorEntity";
-import { Exclude } from "class-transformer";
+import { Exclude} from "class-transformer";
 import { Role } from "src/util/role.enum.util";
 
 
@@ -24,23 +24,25 @@ export class User{
     @OneToOne(()=>Profile,profile=>profile.user,{eager:true,cascade:true})
     @JoinColumn()
     profile:Profile;
-    
-    
-    
+
     @Column({type:"enum",enum:Role,default:Role.STUDENT})
-    @Exclude()
+    // @Exclude()
     role:Role
 
     @OneToOne(()=>Instructor,instructor=>instructor.user)
     instructor:Instructor;
 
+
+    @Column({nullable:true})
+    @Exclude()
+    refreshToken:string;
     
     @OneToOne(()=>Student,student=>student.user)
     student:Student;
 
-    @CreateDateColumn({update:false})
+    @CreateDateColumn({update:false,type:'timestamp'})
     createdAt:Date
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({type:'timestamp'})
     updatedAt:Date
 }
