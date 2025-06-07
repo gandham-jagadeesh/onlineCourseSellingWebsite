@@ -12,14 +12,12 @@ export class AuthController {
     constructor(private readonly authService:AuthService){}
 
 
-    @Post('/login') // passport-local jwt auth guard
+    @Post('/login')
     @UseGuards(localAuthGuard)
-    async login(@CurrentUser() user:User,@Res({passthrough:true}) res:Response){  // send user with tokens and role and stuff
-    // console.log("controller layer",user);
-    return await this.authService.login(user,res); // how to get the user create a custom decorator
+    async login(@CurrentUser() user:User,@Res({passthrough:true}) res:Response){  
+    return await this.authService.login(user,res); 
 }
 
-// idea failing : get the user object -> as passport populates it via local auth guard
 
     @Post('/refreshtoken')
     @UseGuards(jwtRefresh) 
